@@ -13,11 +13,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.travel-better.mobile-module",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBdGan6RmWlB4hFOupq8PN8Pto80BqS8XA"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
