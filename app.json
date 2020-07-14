@@ -1,12 +1,14 @@
 {
   "expo": {
-    "name": "test",
-    "slug": "test",
+    "name": "test-project-1",
+    "slug": "test-project-1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,11 +20,11 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.travel-better.mobile-module",
       "config": {
-        "googleMapsApiKey": "AIzaSyBdGan6RmWlB4hFOupq8PN8Pto80BqS8XA"
+        "googleMapsApiKey": "AIzaSyBU6oHS1U5C2ibRKO_q2eJO7_lTLOgNkvs"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     }
   }
 }
