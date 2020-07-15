@@ -20,7 +20,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.travel-better.mobile-module",
       "config": {
-        "googleMapsApiKey": "AIzaSyBU6oHS1U5C2ibRKO_q2eJO7_lTLOgNkvs"
+        "googleMapsApiKey": "AIzaSyAxlA286xOGIT7pU5LAYek5oq1GpwuSXA4"
       }
     },
     "web": {

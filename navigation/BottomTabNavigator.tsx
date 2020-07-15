@@ -5,14 +5,16 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import MapScreen from "../screens/MapScreen";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import TravelCenterScreen from "../screens/TravelCenterScreen";
+import UserHistoryScreen from "../screens/UserHistoryScreen";
+import RewardsCenterScreen from "../screens/RewardsCenterScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 import {
   BottomTabParamList,
-  MapParamList,
-  TabOneParamList,
-  TabTwoParamList,
+  TravelCenterParamList,
+  UserHistoryParamList,
+  RewardsCenterParamList,
+  UserProfileParamList,
 } from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -22,33 +24,42 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Map"
+      initialRouteName="travelCenter"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="Map"
-        component={MapNavigator}
+        name="Routes"
+        component={TravelCenter}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="ios-home" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="History"
+        component={UserHistoryNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="ios-list" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="Rewards"
+        component={RewardsCenterNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="ios-star" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={UserProfileNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-settings" color={color} />
           ),
         }}
       />
@@ -64,44 +75,58 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const MapStack = createStackNavigator<MapParamList>();
+const TravelCenterStack = createStackNavigator<TravelCenterParamList>();
 
-function MapNavigator() {
+function TravelCenter() {
   return (
-    <MapStack.Navigator>
-      <MapStack.Screen
-        name="MapScreen"
-        component={MapScreen}
-        options={{ headerTitle: "Map Screen" }}
+    <TravelCenterStack.Navigator>
+      <TravelCenterStack.Screen
+        name="TravelCenterScreen"
+        component={TravelCenterScreen}
+        options={{ headerTitle: "Select Route" }}
       />
-    </MapStack.Navigator>
+    </TravelCenterStack.Navigator>
   );
 }
 
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const UserHistoryStack = createStackNavigator<UserHistoryParamList>();
 
-function TabOneNavigator() {
+function UserHistoryNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title" }}
+    <UserHistoryStack.Navigator>
+      <UserHistoryStack.Screen
+        name="UserHistoryScreen"
+        component={UserHistoryScreen}
+        options={{ headerTitle: "My Carbon Footprints" }}
       />
-    </TabOneStack.Navigator>
+    </UserHistoryStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const RewardsCenterStack = createStackNavigator<RewardsCenterParamList>();
 
-function TabTwoNavigator() {
+function RewardsCenterNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
+    <RewardsCenterStack.Navigator>
+      <RewardsCenterStack.Screen
+        name="RewardsCenterScreen"
+        component={RewardsCenterScreen}
+        options={{ headerTitle: "My Rewards" }}
       />
-    </TabTwoStack.Navigator>
+    </RewardsCenterStack.Navigator>
+  );
+}
+
+const UserProfileStack = createStackNavigator<UserProfileParamList>();
+
+function UserProfileNavigator() {
+  return (
+    <UserProfileStack.Navigator>
+      <UserProfileStack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{ headerTitle: "My Profile" }}
+      />
+    </UserProfileStack.Navigator>
   );
 }

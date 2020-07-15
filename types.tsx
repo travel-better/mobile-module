@@ -4,19 +4,24 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  Map: undefined;
-  TabOne: undefined;
-  TabTwo: undefined;
+  travelCenter: undefined;
+  userHistory: undefined;
+  rewardsCenter: undefined;
+  userProfile: undefined;
 };
 
-export type MapParamList = {
-  MapScreen: undefined;
+export type TravelCenterParamList = {
+  TravelCenterScreen: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
+export type UserHistoryParamList = {
+  UserHistoryScreen: undefined;
 };
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type RewardsCenterParamList = {
+  RewardsCenterScreen: undefined;
+};
+
+export type UserProfileParamList = {
+  UserProfileScreen: undefined;
 };

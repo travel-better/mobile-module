@@ -6,19 +6,24 @@ export default {
     screens: {
       Root: {
         screens: {
-          Map: {
+          travelCenter: {
             screens: {
-              TabOneScreen: "map",
+              TravelCenterScreen: "routes",
             },
           },
-          TabOne: {
+          userHistory: {
             screens: {
-              TabOneScreen: "one",
+              UserHistoryScreen: "footprint",
             },
           },
-          TabTwo: {
+          rewardsCenter: {
             screens: {
-              TabTwoScreen: "two",
+              RewardsCenterScreen: "rewards",
+            },
+          },
+          userProfile: {
+            screens: {
+              UserProfileScreen: "profile",
             },
           },
         },

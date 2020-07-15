@@ -5,7 +5,7 @@ import MapViewDirections from "react-native-maps-directions";
 import { Text, Dimensions, SafeAreaView } from "react-native";
 import { View } from "../components/Themed";
 
-export default function MapScreen() {
+export default function TravelCenterScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* <View style={styles.abStyle}>
@@ -36,7 +36,7 @@ export default function MapScreen() {
   );
 }
 
-const GOOGLE_API_KEY = "AIzaSyBU6oHS1U5C2ibRKO_q2eJO7_lTLOgNkvs";
+const GOOGLE_API_KEY = "AIzaSyAxlA286xOGIT7pU5LAYek5oq1GpwuSXA4";
 const origin = { latitude: 37.79879, longitude: -122.442753 };
 const destination = { latitude: 37.790651, longitude: -122.422497 };
 
