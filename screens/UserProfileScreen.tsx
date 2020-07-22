@@ -3,8 +3,23 @@ import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import baseUrl from '../constants/BaseUrl';
 
 export default function UserProfileScreen() {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch(`${baseUrl}/users/string`, {
+      method: "GET",
+      headers: new Headers({
+        Accept: "application/json"
+      })
+    })
+      .then(res => res.json())
+      .then(json =>  setData(json))
+      .catch(err => console.error(err))
+  }, [data])
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
@@ -13,7 +28,8 @@ export default function UserProfileScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/UserProfileScreen.tsx" />
+      <Text>{data.address}</Text>
+      {/* <EditScreenInfo path="/screens/UserProfileScreen.tsx" /> */}
     </View>
   );
 }
