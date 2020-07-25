@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
-import baseUrl from '../constants/BaseUrl';
 
 export default function UserProfileScreen() {
   const [data, setData] = React.useState([]);
@@ -33,6 +32,8 @@ export default function UserProfileScreen() {
     </View>
   );
 }
+
+const baseUrl = "https://travelbetter.mybluemix.net";
 
 const styles = StyleSheet.create({
   container: {
