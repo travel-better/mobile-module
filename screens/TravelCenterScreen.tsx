@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Dimensions, SafeAreaView, TouchableOpacity, Switch, StyleSheet } from "react-native";
+import { Dimensions, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, Switch, StyleSheet, TouchableWithoutFeedbackBase } from "react-native";
 import * as Location from 'expo-location';
 
 import MapView from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { FloatingAction } from 'react-native-floating-action';
-import { Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 import { View, Text } from "../components/Themed";
 
@@ -52,8 +52,26 @@ export default function TravelCenterScreen() {
           longitudeDelta: 0.0421,
         }}
       >
-        <MapView.Marker coordinate={origin} />
-        <MapView.Marker coordinate={destination} />
+        <MapView.Marker
+        draggable
+        title="Origin"
+        description="Where are you travelling from?"
+        coordinate={origin}
+        onDragEnd={(e) => setOrigin({
+          latitude: e.nativeEvent.coordinate.latitude,
+          longitude: e.nativeEvent.coordinate.longitude,
+        })}
+        />
+        <MapView.Marker 
+        draggable
+        title="Destination"
+        description="Where are you travelling to?"
+        coordinate={destination}
+        onDragEnd={(e) => setDestination({
+          latitude: e.nativeEvent.coordinate.latitude,
+          longitude: e.nativeEvent.coordinate.longitude,
+        })}
+        />
         {mode === "driving" &&
           <MapViewDirections
             origin={origin}
@@ -135,10 +153,20 @@ export default function TravelCenterScreen() {
       <View style={styles.floatingMode}>
         <Text style={{ color: "white" }}>{mode}</Text>
       </View>
+      <TouchableWithoutFeedback
+        onPress={() => setActions({
+          coordinates: false,
+          footprintSetting: false,
+          travelMode: false
+        })}>
+        <View style={styles.removeButton}>
+          <FontAwesome name="remove" size={18} color="white" />
+        </View>
+      </TouchableWithoutFeedback>
       {shownActions.coordinates &&
         <View style={styles.abStyle}>
           <GooglePlacesAutocomplete
-            placeholder="Location"
+            placeholder="Origin"
             minLength={2}
             autoFocus={false}
             fetchDetails={true}
@@ -316,5 +344,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: Dimensions.get("window").height * 0.05,
     backgroundColor: null,
+  },
+  removeButton: {
+    position: 'absolute',
+    color: "#000000",
+    borderWidth: 1,
+    backgroundColor: "#000000",
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: Dimensions.get("window").width * 0.09,
+    height: Dimensions.get("window").height * 0.05,
+    top: 10,
+    right: 10,
+    borderRadius: 100,
   }
 });
