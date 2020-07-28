@@ -31,9 +31,10 @@ export default function TravelCenterScreen() {
 
   const [origin, setOrigin] = React.useState((tempCords))
   const [destination, setDestination] = React.useState(tempCords)
-  const [mode, setMode] = React.useState('Driving');
+  const [mode, setMode] = React.useState(null);
   const [shownActions, setActions] = React.useState(defaultActionsState);
   const [footprintSetting, setFootprintSetting] = React.useState(true);
+  let mapRef = React.useRef(null);
 
   // Function to toggle the carbon footprint switch
   const toggleSwitch = () => {
@@ -45,6 +46,7 @@ export default function TravelCenterScreen() {
       <MapView
         style={StyleSheet.absoluteFill}
         provider="google"
+        ref={ref => mapRef = ref}
         initialRegion={{
           latitude: 37.79879,
           longitude: -122.442753,
@@ -53,24 +55,24 @@ export default function TravelCenterScreen() {
         }}
       >
         <MapView.Marker
-        draggable
-        title="Origin"
-        description="Where are you travelling from?"
-        coordinate={origin}
-        onDragEnd={(e) => setOrigin({
-          latitude: e.nativeEvent.coordinate.latitude,
-          longitude: e.nativeEvent.coordinate.longitude,
-        })}
+          draggable
+          title="Origin"
+          description="Where are you travelling from?"
+          coordinate={origin}
+          onDragEnd={(e) => setOrigin({
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          })}
         />
-        <MapView.Marker 
-        draggable
-        title="Destination"
-        description="Where are you travelling to?"
-        coordinate={destination}
-        onDragEnd={(e) => setDestination({
-          latitude: e.nativeEvent.coordinate.latitude,
-          longitude: e.nativeEvent.coordinate.longitude,
-        })}
+        <MapView.Marker
+          draggable
+          title="Destination"
+          description="Where are you travelling to?"
+          coordinate={destination}
+          onDragEnd={(e) => setDestination({
+            latitude: e.nativeEvent.coordinate.latitude,
+            longitude: e.nativeEvent.coordinate.longitude,
+          })}
         />
         {mode === "driving" &&
           <MapViewDirections
@@ -80,6 +82,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="hotpink"
             mode="DRIVING"
+            onReady={result => {
+              console.log(`Distance: ${result.distance} km`)
+              console.log(`Duration: ${result.duration} min.`)
+
+              mapRef.fitToCoordinates(result.coordinates, {
+                edgePadding: edgePaddingDefault,
+                animated: true,
+              });
+            }}
           />
         }
         {mode === "walking" &&
@@ -90,6 +101,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="red"
             mode="WALKING"
+            onReady={result => {
+              console.log(`Distance: ${result.distance} km`)
+              console.log(`Duration: ${result.duration} min.`)
+
+              mapRef.fitToCoordinates(result.coordinates, {
+                edgePadding: edgePaddingDefault,
+                animated: true,
+              });
+            }}
           />
         }
         {mode === "bicycling" &&
@@ -100,6 +120,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="blue"
             mode="BICYCLING"
+            onReady={result => {
+              console.log(`Distance: ${result.distance} km`)
+              console.log(`Duration: ${result.duration} min.`)
+
+              mapRef.fitToCoordinates(result.coordinates, {
+                edgePadding: edgePaddingDefault,
+                animated: true,
+              });
+            }}
           />
         }
         {mode === "transit" &&
@@ -110,6 +139,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="green"
             mode="TRANSIT"
+            onReady={result => {
+              console.log(`Distance: ${result.distance} km`)
+              console.log(`Duration: ${result.duration} min.`)
+
+              mapRef.fitToCoordinates(result.coordinates, {
+                edgePadding: edgePaddingDefault,
+                animated: true,
+              });
+            }}
           />
         }
       </MapView>
@@ -150,25 +188,27 @@ export default function TravelCenterScreen() {
           }
         }}
       />
-      <View style={styles.floatingMode}>
+      {mode && <View style={styles.floatingMode}>
         <Text style={{ color: "white" }}>{mode}</Text>
-      </View>
-      <TouchableWithoutFeedback
-        onPress={() => setActions({
-          coordinates: false,
-          footprintSetting: false,
-          travelMode: false
-        })}>
-        <View style={styles.removeButton}>
-          <FontAwesome name="remove" size={18} color="white" />
-        </View>
-      </TouchableWithoutFeedback>
+      </View>}
+      {shownActions.coordinates === true || shownActions.footprintSetting === true|| shownActions.travelMode === true &&
+        <TouchableWithoutFeedback
+          onPress={() => setActions({
+            coordinates: false,
+            footprintSetting: false,
+            travelMode: false
+          })}>
+          <View style={styles.removeButton}>
+            <FontAwesome name="remove" size={18} color="white" />
+          </View>
+        </TouchableWithoutFeedback>
+      }
       {shownActions.coordinates &&
         <View style={styles.abStyle}>
           <GooglePlacesAutocomplete
             placeholder="Origin"
             minLength={2}
-            autoFocus={false}
+            autoFocus={true}
             fetchDetails={true}
             onPress={(data, details = null) => {
               setOrigin({
@@ -192,6 +232,7 @@ export default function TravelCenterScreen() {
             autoFocus={true}
             fetchDetails={true}
             onPress={(data, details = null) => {
+              console.log(details?.formatted_address);
               setDestination({
                 latitude: details?.geometry.location.lat,
                 longitude: details?.geometry.location.lng,
@@ -257,6 +298,13 @@ const defaultActionsState = {
   coordinates: false,
   travelMode: false,
   footprintSetting: false,
+}
+// Default padding values for the edgePadding used in fitToCoordinates
+const edgePaddingDefault = {
+  right: 30,
+  bottom: 30,
+  left: 30,
+  top: 30,
 }
 // Actions for the floating action button
 const actions = [
