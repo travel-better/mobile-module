@@ -14,8 +14,13 @@ export default function TravelCenterScreen() {
 
   // To be added getting a way to get user location before start using the applcations 
   // and set the state of the origin and destination with those coordinates
-  // Also add a flashing banner to alert user that the location service is denied(if denied)
+  // Also possibly add a flashing banner to alert user that the location service is denied(if denied)
   const [errorMsg, setErrorMsg] = React.useState(null);
+  const [userLocation, setUserLocation] = React.useState({
+    latitude: 0,
+    longitude: 0,
+  });
+
   let _getUserLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
@@ -23,11 +28,20 @@ export default function TravelCenterScreen() {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    return {
+    setUserLocation({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
-    }
+    })
   }
+
+  React.useEffect(() => {
+    _getUserLocation()
+    console.log(userLocation);
+  })
+
+  // Testing done with the initial region in MapView
+  // latitude: userLocation.latitude || userLocation.latitude !== 0 ? userLocation.latitude : 40.7128,
+  // longitude: userLocation.longitude || userLocation.longitude !== 0 ? userLocation.longitude : -74.0060,
 
   const [origin, setOrigin] = React.useState((tempCords))
   const [destination, setDestination] = React.useState(tempCords)
@@ -48,8 +62,8 @@ export default function TravelCenterScreen() {
         provider="google"
         ref={ref => mapRef = ref}
         initialRegion={{
-          latitude: 37.79879,
-          longitude: -122.442753,
+          latitude: 40.7128,
+          longitude: -74.0060,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
