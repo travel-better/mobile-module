@@ -96,15 +96,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="hotpink"
             mode="DRIVING"
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`)
-              console.log(`Duration: ${result.duration} min.`)
+            // onReady={result => {
+            //   console.log(`Distance: ${result.distance} km`)
+            //   console.log(`Duration: ${result.duration} min.`)
 
-              mapRef.fitToCoordinates(result.coordinates, {
-                edgePadding: edgePaddingDefault,
-                animated: true,
-              });
-            }}
+            //   mapRef.fitToCoordinates(result.coordinates, {
+            //     edgePadding: edgePaddingDefault,
+            //     animated: true,
+            //   });
+            // }}
           />
         }
         {mode === "walking" &&
@@ -115,15 +115,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="red"
             mode="WALKING"
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`)
-              console.log(`Duration: ${result.duration} min.`)
+            // onReady={result => {
+            //   console.log(`Distance: ${result.distance} km`)
+            //   console.log(`Duration: ${result.duration} min.`)
 
-              mapRef.fitToCoordinates(result.coordinates, {
-                edgePadding: edgePaddingDefault,
-                animated: true,
-              });
-            }}
+            //   mapRef.fitToCoordinates(result.coordinates, {
+            //     edgePadding: edgePaddingDefault,
+            //     animated: true,
+            //   });
+            // }}
           />
         }
         {mode === "bicycling" &&
@@ -134,15 +134,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="blue"
             mode="BICYCLING"
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`)
-              console.log(`Duration: ${result.duration} min.`)
+            // onReady={result => {
+            //   console.log(`Distance: ${result.distance} km`)
+            //   console.log(`Duration: ${result.duration} min.`)
 
-              mapRef.fitToCoordinates(result.coordinates, {
-                edgePadding: edgePaddingDefault,
-                animated: true,
-              });
-            }}
+            //   mapRef.fitToCoordinates(result.coordinates, {
+            //     edgePadding: edgePaddingDefault,
+            //     animated: true,
+            //   });
+            // }}
           />
         }
         {mode === "transit" &&
@@ -153,15 +153,15 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="green"
             mode="TRANSIT"
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`)
-              console.log(`Duration: ${result.duration} min.`)
+            // onReady={result => {
+            //   console.log(`Distance: ${result.distance} km`)
+            //   console.log(`Duration: ${result.duration} min.`)
 
-              mapRef.fitToCoordinates(result.coordinates, {
-                edgePadding: edgePaddingDefault,
-                animated: true,
-              });
-            }}
+            //   mapRef.fitToCoordinates(result.coordinates, {
+            //     edgePadding: edgePaddingDefault,
+            //     animated: true,
+            //   });
+            // }}
           />
         }
       </MapView>
@@ -304,8 +304,8 @@ export default function TravelCenterScreen() {
 
 const GOOGLE_API_KEY = "AIzaSyAxlA286xOGIT7pU5LAYek5oq1GpwuSXA4";
 const tempCords = {
-  latitude: 37.79879,
-  longitude: -122.442753,
+  latitude: 40.7128,
+  longitude: -74.0060,
 }
 // Set the initial state of showing the locations, travel mode & carbon footprint settings
 const defaultActionsState = {
