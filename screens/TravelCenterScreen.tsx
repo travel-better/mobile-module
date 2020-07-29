@@ -9,6 +9,7 @@ import { FloatingAction } from 'react-native-floating-action';
 import { Entypo, MaterialCommunityIcons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 import { View, Text } from "../components/Themed";
+import { Calculator } from './utils/CarbonCalculator';
 
 export default function TravelCenterScreen() {
 
@@ -34,10 +35,10 @@ export default function TravelCenterScreen() {
     })
   }
 
-  React.useEffect(() => {
-    _getUserLocation()
-    console.log(userLocation);
-  })
+  // React.useEffect(() => {
+  //   _getUserLocation()
+  //   console.log(userLocation);
+  // })
 
   // Testing done with the initial region in MapView
   // latitude: userLocation.latitude || userLocation.latitude !== 0 ? userLocation.latitude : 40.7128,
@@ -96,15 +97,17 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="hotpink"
             mode="DRIVING"
-            // onReady={result => {
-            //   console.log(`Distance: ${result.distance} km`)
-            //   console.log(`Duration: ${result.duration} min.`)
-
-            //   mapRef.fitToCoordinates(result.coordinates, {
-            //     edgePadding: edgePaddingDefault,
-            //     animated: true,
-            //   });
-            // }}
+            onReady={result => {
+              if (result.distance !== 0 && result.duration !== 0) {
+                mapRef.fitToCoordinates(result.coordinates, {
+                  edgePadding: edgePaddingDefault,
+                  animated: true,
+                });
+                Calculator(result.distance, mode);
+              } else {
+                setErrorMsg('Set the destination and location')
+              }
+            }}
           />
         }
         {mode === "walking" &&
@@ -115,15 +118,17 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="red"
             mode="WALKING"
-            // onReady={result => {
-            //   console.log(`Distance: ${result.distance} km`)
-            //   console.log(`Duration: ${result.duration} min.`)
-
-            //   mapRef.fitToCoordinates(result.coordinates, {
-            //     edgePadding: edgePaddingDefault,
-            //     animated: true,
-            //   });
-            // }}
+            onReady={result => {
+              if (result.distance !== 0 && result.duration !== 0) {
+                mapRef.fitToCoordinates(result.coordinates, {
+                  edgePadding: edgePaddingDefault,
+                  animated: true,
+                });
+                Calculator(result.distance, mode);
+              } else {
+                setErrorMsg('Set the destination and location')
+              }
+            }}
           />
         }
         {mode === "bicycling" &&
@@ -134,15 +139,17 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="blue"
             mode="BICYCLING"
-            // onReady={result => {
-            //   console.log(`Distance: ${result.distance} km`)
-            //   console.log(`Duration: ${result.duration} min.`)
-
-            //   mapRef.fitToCoordinates(result.coordinates, {
-            //     edgePadding: edgePaddingDefault,
-            //     animated: true,
-            //   });
-            // }}
+            onReady={result => {
+              if (result.distance !== 0 && result.duration !== 0) {
+                mapRef.fitToCoordinates(result.coordinates, {
+                  edgePadding: edgePaddingDefault,
+                  animated: true,
+                });
+                Calculator(result.distance, mode);
+              } else {
+                setErrorMsg('Set the destination and location')
+              }
+            }}
           />
         }
         {mode === "transit" &&
@@ -153,15 +160,17 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="green"
             mode="TRANSIT"
-            // onReady={result => {
-            //   console.log(`Distance: ${result.distance} km`)
-            //   console.log(`Duration: ${result.duration} min.`)
-
-            //   mapRef.fitToCoordinates(result.coordinates, {
-            //     edgePadding: edgePaddingDefault,
-            //     animated: true,
-            //   });
-            // }}
+            onReady={result => {
+              if (result.distance !== 0 && result.duration !== 0) {
+                mapRef.fitToCoordinates(result.coordinates, {
+                  edgePadding: edgePaddingDefault,
+                  animated: true,
+                });
+                Calculator(result.distance, mode);
+              } else {
+                setErrorMsg('Set the destination and location')
+              }
+            }}
           />
         }
       </MapView>
@@ -205,7 +214,7 @@ export default function TravelCenterScreen() {
       {mode && <View style={styles.floatingMode}>
         <Text style={{ color: "white" }}>{mode}</Text>
       </View>}
-      {shownActions.coordinates === true || shownActions.footprintSetting === true|| shownActions.travelMode === true &&
+      {(shownActions.coordinates === true || shownActions.footprintSetting === true || shownActions.travelMode === true) &&
         <TouchableWithoutFeedback
           onPress={() => setActions({
             coordinates: false,
