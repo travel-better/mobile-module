@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dimensions, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, Switch, StyleSheet, TouchableWithoutFeedbackBase } from "react-native";
+import { Dimensions, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, Switch, StyleSheet } from "react-native";
 import * as Location from 'expo-location';
 
 import MapView from "react-native-maps";
@@ -13,9 +13,16 @@ import { Calculator } from './utils/CarbonCalculator';
 
 export default function TravelCenterScreen() {
 
-  // To be added getting a way to get user location before start using the applcations 
-  // and set the state of the origin and destination with those coordinates
-  // Also possibly add a flashing banner to alert user that the location service is denied(if denied)
+  const [origin, setOrigin] = React.useState((tempCords))
+  const [destination, setDestination] = React.useState(tempCords)
+  const [mode, setMode] = React.useState(null);
+  const [shownActions, setActions] = React.useState(defaultActionsState);
+  const [footprintSetting, setFootprintSetting] = React.useState(true);
+  const [carbonMessage, setCarbonMessage] = React.useState('On average, a personal vehicle emits about 0.96 lbs of Carbon per mile');
+  let mapRef = React.useRef(null);
+
+  // To be set: Initial map region to be users current location if location services are allowed.
+  // Add a flashing banner to alert user that the location service is denied if denied
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [userLocation, setUserLocation] = React.useState({
     latitude: 0,
@@ -33,23 +40,12 @@ export default function TravelCenterScreen() {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     })
-  }
-
-  // React.useEffect(() => {
-  //   _getUserLocation()
-  //   console.log(userLocation);
-  // })
+  }  
 
   // Testing done with the initial region in MapView
-  // latitude: userLocation.latitude || userLocation.latitude !== 0 ? userLocation.latitude : 40.7128,
-  // longitude: userLocation.longitude || userLocation.longitude !== 0 ? userLocation.longitude : -74.0060,
+  // latitude: (userLocation.latitude || userLocation.latitude !== 0) ? userLocation.latitude : 40.7128,
+  // longitude: (userLocation.longitude || userLocation.longitude !== 0) ? userLocation.longitude : -74.0060,
 
-  const [origin, setOrigin] = React.useState((tempCords))
-  const [destination, setDestination] = React.useState(tempCords)
-  const [mode, setMode] = React.useState(null);
-  const [shownActions, setActions] = React.useState(defaultActionsState);
-  const [footprintSetting, setFootprintSetting] = React.useState(true);
-  let mapRef = React.useRef(null);
 
   // Function to toggle the carbon footprint switch
   const toggleSwitch = () => {
@@ -103,7 +99,8 @@ export default function TravelCenterScreen() {
                   edgePadding: edgePaddingDefault,
                   animated: true,
                 });
-                Calculator(result.distance, mode);
+                let carbonEmmission = Calculator(result.distance, mode);
+                setCarbonMessage(`You could reduce your carbon footprint by ${carbonEmmission} lbs if you take transit`);
               } else {
                 setErrorMsg('Set the destination and location')
               }
@@ -124,7 +121,8 @@ export default function TravelCenterScreen() {
                   edgePadding: edgePaddingDefault,
                   animated: true,
                 });
-                Calculator(result.distance, mode);
+                let carbonEmmission = Calculator(result.distance, mode);
+                setCarbonMessage(`Your carbon footprint would be reduced by ${carbonEmmission} lbs`)
               } else {
                 setErrorMsg('Set the destination and location')
               }
@@ -139,13 +137,14 @@ export default function TravelCenterScreen() {
             strokeWidth={3}
             strokeColor="blue"
             mode="BICYCLING"
-            onReady={result => {
+            onReady={result => {              
               if (result.distance !== 0 && result.duration !== 0) {
                 mapRef.fitToCoordinates(result.coordinates, {
                   edgePadding: edgePaddingDefault,
                   animated: true,
                 });
-                Calculator(result.distance, mode);
+                let carbonEmmission = Calculator(result.distance, mode);
+                setCarbonMessage(`Your carbon footprint would be reduced by ${carbonEmmission} lbs`)
               } else {
                 setErrorMsg('Set the destination and location')
               }
@@ -166,7 +165,8 @@ export default function TravelCenterScreen() {
                   edgePadding: edgePaddingDefault,
                   animated: true,
                 });
-                Calculator(result.distance, mode);
+                let carbonEmmission = Calculator(result.distance, mode);
+                setCarbonMessage(`Your carbon footprint would be reduced by ${carbonEmmission} lbs`)
               } else {
                 setErrorMsg('Set the destination and location')
               }
@@ -255,7 +255,6 @@ export default function TravelCenterScreen() {
             autoFocus={true}
             fetchDetails={true}
             onPress={(data, details = null) => {
-              console.log(details?.formatted_address);
               setDestination({
                 latitude: details?.geometry.location.lat,
                 longitude: details?.geometry.location.lng,
@@ -295,12 +294,13 @@ export default function TravelCenterScreen() {
       {
         shownActions.footprintSetting &&
         <View style={styles.togglerStyles}>
-          <Text>Carbon Emission Savings</Text>
+          <Text style={[styles.carbonStyles, {fontWeight: "bold", textDecorationLine: "underline"}]}>Carbon Emission Savings</Text>
+          <Text style={styles.carbonStyles}>{carbonMessage}</Text>
           <View style={[styles.togglerStyles, styles.TextAlignSwitch]}>
-            <Text>Add to my footprints</Text>
+            <Text style={styles.carbonStyles}>Add to my footprints</Text>
             <Switch
-              trackColor={{ false: "#f4f3f4", true: "#000000" }}
-              thumbColor={footprintSetting ? "#000000" : "#f4f3f4"}
+              trackColor={{ false: "#ccc", true: "#2196F3" }}
+              thumbColor={footprintSetting ? "#f4f3f4" : "#f4f3f4"}
               onValueChange={toggleSwitch}
               value={footprintSetting}
             />
@@ -354,6 +354,12 @@ const actions = [
   },
 ]
 
+// Dimensions
+const window = {
+  height: Dimensions.get("window").height,
+  width: Dimensions.get("window").width,
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -370,8 +376,8 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   mapStyle: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.8,
+    width: window.width,
+    height: window.height * 0.8,
   },
   abStyle: {
     flexDirection: "row",
@@ -384,8 +390,8 @@ const styles = StyleSheet.create({
   modeButton: {
     flex: 1,
     backgroundColor: "#000000",
-    width: Dimensions.get("window").width / 3,
-    height: Dimensions.get("window").height * 0.04,
+    width: window.width / 3,
+    height: window.height * 0.04,
     alignItems: "center",
   },
   modeBtnText: {
@@ -397,9 +403,9 @@ const styles = StyleSheet.create({
   },
   floatingMode: {
     position: "relative",
-    bottom: Dimensions.get("window").height / 3,
-    width: Dimensions.get("window").width / 3,
-    height: Dimensions.get("window").height * 0.05,
+    bottom: window.height / 3,
+    width: window.width / 3,
+    height: window.height * 0.05,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
@@ -407,13 +413,13 @@ const styles = StyleSheet.create({
   togglerStyles: {
     justifyContent: "center",
     alignItems: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.1,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    width: window.width,
+    height: window.height * 0.3,
+    backgroundColor: "rgba(0,0,0,0.8)",
   },
   TextAlignSwitch: {
     flexDirection: "row",
-    height: Dimensions.get("window").height * 0.05,
+    height: window.height * 0.05,
     backgroundColor: null,
   },
   removeButton: {
@@ -424,10 +430,14 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    width: Dimensions.get("window").width * 0.09,
-    height: Dimensions.get("window").height * 0.05,
+    width: window.width * 0.09,
+    height: window.height * 0.05,
     top: 10,
     right: 10,
     borderRadius: 100,
-  }
+  },
+  carbonStyles: {
+    fontSize: 17,
+    textAlign: "center",
+  },
 });

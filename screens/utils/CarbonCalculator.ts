@@ -1,34 +1,32 @@
-// Saved carbon footprint = miles traveled * avg for transportation medium/person
-// for this prototype, we will use two figures for two averages. One for public transport (MTA/Train/etc) 
-// and another for car transport (own car/uber/etc). We'll assume walking/biking will be 0 CO2 emission.
-// For public transit, you can get carbon estimate for miles from here: https://calculator.carbonfootprint.com/calculator.aspx?tab=6
+// Carbon averages based on data from:
+// https://www.transit.dot.gov/sites/fta.dot.gov/files/docs/PublicTransportationsRoleInRespondingToClimateChange2010.pdf
+// https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references
+// https://en.wikipedia.org/wiki/Carbon_footprint#Passenger_transport
 
-
-export const Calculator = (kms: any, mode: string) => {
+// Calculate carbon footprint saving & potential savings(driving)
+export const Calculator = (kms: number, mode: string) => {
     const averages = {
-        driving: 1, // Passenger Vehicle
-        walking: 2,
-        biking: 3,
-        transit: 4
-    }
+        driving: 0.96, // Passenger Vehicle
+        transit: 0.31,
+    };
     let calculationAverage: any;
-    let miles: any;
+    let miles: number;
     miles = kms / 1.609;
     switch(mode) {
         case 'transit':
-            calculationAverage = averages.transit;
+            calculationAverage = averages.driving - averages.transit;
             break
         case 'driving':
+            calculationAverage = averages.driving - averages.transit;   // What user could save if they don't drive
+            break
+        case 'bicycling':
             calculationAverage = averages.driving;
             break
-        case 'biking':
-            calculationAverage = averages.biking;
-            break
         case 'walking':
-            calculationAverage = averages.walking;
+            calculationAverage = averages.driving
             break
     }
 
     console.log(miles * calculationAverage);
-    return miles * calculationAverage;
+    return Math.round(miles * calculationAverage).toFixed(2);
 }

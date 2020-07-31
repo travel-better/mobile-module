@@ -13,7 +13,7 @@ export default function UserHistoryScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/UserHistoryScreen.tsx" />
+      {/* <EditScreenInfo path="/screens/UserHistoryScreen.tsx" /> */}
     </View>
   );
 }

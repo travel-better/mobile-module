@@ -7,7 +7,7 @@ import { Text, View } from "../components/Themed";
 export default function UserProfileScreen() {
   const [data, setData] = React.useState([]);
 
-  React.useEffect(() => {
+  const getUser = () => {
     fetch(`${baseUrl}/users/string`, {
       method: "GET",
       headers: new Headers({
@@ -17,7 +17,8 @@ export default function UserProfileScreen() {
       .then(res => res.json())
       .then(json =>  setData(json))
       .catch(err => console.error(err))
-  }, [data])
+  }
+  getUser()
 
   return (
     <View style={styles.container}>
@@ -27,13 +28,13 @@ export default function UserProfileScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Text>{data.address}</Text>
+      {/* <Text>{data?.address}</Text> */}
       {/* <EditScreenInfo path="/screens/UserProfileScreen.tsx" /> */}
     </View>
   );
 }
 
-const baseUrl = "https://travelbetter.mybluemix.net";
+const baseUrl = "https://travelbetter.mybluemix.net/travelbetter";
 
 const styles = StyleSheet.create({
   container: {
