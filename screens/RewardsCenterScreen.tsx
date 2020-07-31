@@ -13,7 +13,7 @@ export default function RewardsCenterScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/RewardsCenterScreen.tsx" />
+      {/* <EditScreenInfo path="/screens/RewardsCenterScreen.tsx" /> */}
     </View>
   );
 }
