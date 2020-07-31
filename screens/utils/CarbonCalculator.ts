@@ -27,6 +27,5 @@ export const Calculator = (kms: number, mode: string) => {
             break
     }
 
-    console.log(miles * calculationAverage);
     return Math.round(miles * calculationAverage).toFixed(2);
 }
